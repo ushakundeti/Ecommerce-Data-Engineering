@@ -147,11 +147,13 @@ div[data-baseweb="select"] > div {
 @st.cache_data
 def load_data():
 
-    base_dir = Path(__file__).resolve().parent
+   
+base_dir = Path(__file__).resolve().parent
 
-    data_file = base_dir / "output" / "cleaned_ecommerce.csv"
+data_file = base_dir / "cleaned_ecommerce.csv"
 
-    df = pd.read_csv(data_file)
+df = pd.read_csv(data_file)
+
 
     df["order_date"] = pd.to_datetime(
         df["order_date"], errors="coerce"
