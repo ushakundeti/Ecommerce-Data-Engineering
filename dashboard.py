@@ -173,6 +173,20 @@ def load_data():
     df["month"] = df["order_date"].dt.strftime("%b %Y")
 
     return df
+    
+# Load the dataset before creating sidebar filters
+try:
+    df = load_data()
+
+except Exception as e:
+    st.error("Unable to load the sales dataset.")
+    st.exception(e)
+    st.stop()
+
+if df.empty:
+    st.warning("No sales records found.")
+    st.stop()
+
 
 
 
@@ -182,44 +196,34 @@ def load_data():
 # 4. SIDEBAR
 # ==========================================
 
-st.sidebar.title("🛍️ E-Commerce")
-st.sidebar.markdown("### Dashboard Menu")
-st.sidebar.divider()
 
+# Sidebar filters
+st.sidebar.title("🛍️ E-Commerce")
 st.sidebar.markdown("### Filter Sales Data")
 
 cities = ["All Cities"] + sorted(
-    df["city"].dropna().unique().tolist()
+    df["city"].dropna().astype(str).unique().tolist()
 )
 
 categories = ["All Categories"] + sorted(
-    df["category"].dropna().unique().tolist()
+    df["category"].dropna().astype(str).unique().tolist()
 )
 
 months = sorted(
-    df["month"].dropna().unique().tolist(),
-    key=lambda x: pd.to_datetime(x, format="%b %Y")
+    df["month"].dropna().unique().tolist()
 )
 
-month_options = ["All Months"] + months
-
 selected_city = st.sidebar.selectbox(
-    "Choose City",
-    cities
+    "Choose City", cities
 )
 
 selected_category = st.sidebar.selectbox(
-    "Choose Category",
-    categories
+    "Choose Category", categories
 )
 
 selected_month = st.sidebar.selectbox(
-    "Choose Month",
-    month_options
+    "Choose Month", ["All Months"] + months
 )
-
-st.sidebar.divider()
-st.sidebar.caption("E-Commerce Sales Analytics")
 
 
 # ==========================================
