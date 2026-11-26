@@ -144,16 +144,15 @@ div[data-baseweb="select"] > div {
 # 3. LOAD DATA
 # ==========================================
 
+
 @st.cache_data
 def load_data():
 
-   
-base_dir = Path(__file__).resolve().parent
+    base_dir = Path(__file__).resolve().parent
 
-data_file = base_dir / "cleaned_ecommerce.csv"
+    data_file = base_dir / "cleaned_ecommerce.csv"
 
-df = pd.read_csv(data_file)
-
+    df = pd.read_csv(data_file)
 
     df["order_date"] = pd.to_datetime(
         df["order_date"], errors="coerce"
@@ -174,20 +173,7 @@ df = pd.read_csv(data_file)
     df["month"] = df["order_date"].dt.strftime("%b %Y")
 
     return df
-    
-# Load dataset
-try:
-    df = load_data()
 
-except Exception as e:
-    st.error("Unable to load the sales dataset.")
-    st.warning("Check your cleaned_ecommerce.csv file.")
-    st.code(str(e))
-    st.stop()
-
-if df.empty:
-    st.warning("No sales records found.")
-    st.stop()
 
 
 
